@@ -15,9 +15,16 @@ fn main() -> std::io::Result<()> {
     let selector = Selector::parse("td").unwrap();
     let mut elements: Vec<String> = Vec::new();
     for element in html.select(&selector) {
-        println!("{}", element.inner_html());
-        // elements.push(element.inner_html());
+        let s = element.inner_html().to_string();
+        let s = s.replace("\n", "");
+        elements.push(s);
     }
 
+    let mut file = File::create("foo.txt")?;
+
+    for element in elements {
+        file.write_all(element.as_bytes())?;
+        file.write_all(b"\n")?;
+    }
     return Ok(());
 }
