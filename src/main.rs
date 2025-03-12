@@ -17,11 +17,30 @@ fn main() -> std::io::Result<()> {
         elements.push(s);
     }
 
-    let mut file = File::create("foo.txt")?;
+    let mut toki_code: usize = 0;
+    let mut first_date: usize = 0;
 
-    for element in elements {
-        file.write_all(element.as_bytes())?;
+    for (i, s) in elements.iter().enumerate() {
+        if s == "TOKISTAR CODE" {
+            toki_code = i;
+        }
+    }
+    for i in (0..toki_code).rev() {
+        if elements[i].is_empty() {
+            first_date = i + 1;
+            break;
+        }
+    }
+
+    let number_of_dates = toki_code - first_date;
+
+    elements.drain(0..first_date);
+
+    let mut file = File::create("dates.txt")?;
+    for i in 0..number_of_dates {
+        file.write_all(elements[i].as_bytes())?;
         file.write_all(b"\n")?;
     }
+
     return Ok(());
 }
