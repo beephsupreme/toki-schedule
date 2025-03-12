@@ -1,7 +1,8 @@
+//
+use crate::URL;
+
 use scraper::Selector;
 use std::{fs::File, io::Write};
-
-const URL: &str = "https://www.toki.co.jp/purchasing/TLIHTML.files/sheet001.htm";
 
 fn main() -> std::io::Result<()> {
     //
@@ -44,12 +45,16 @@ fn main() -> std::io::Result<()> {
 
     elements.drain(0..(2 * number_of_dates + 5));
 
+    for element in elements.iter_mut() {
+        if element == "�@" {
+            *element = "0".to_string();
+        }
+    }
+
     let mut records: Vec<String> = Vec::new();
 
     let cols = number_of_dates + 5;
     let rows = elements.len() / cols;
-
-    println!("rows = {}, cols = {}", rows, cols);
 
     for r in 0..(rows - 1) {
         for c in 0..cols {
@@ -67,3 +72,4 @@ fn main() -> std::io::Result<()> {
 
     return Ok(());
 }
+//
