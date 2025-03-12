@@ -1,8 +1,7 @@
 //
-use crate::URL;
-
 use scraper::Selector;
 use std::{fs::File, io::Write};
+use toki_schedule::URL;
 
 fn main() -> std::io::Result<()> {
     //
