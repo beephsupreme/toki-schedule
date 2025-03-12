@@ -36,10 +36,33 @@ fn main() -> std::io::Result<()> {
 
     elements.drain(0..first_date);
 
-    let mut file = File::create("dates.txt")?;
+    let mut date_file = File::create("dates.txt")?;
     for i in 0..number_of_dates {
-        file.write_all(elements[i].as_bytes())?;
-        file.write_all(b"\n")?;
+        date_file.write_all(elements[i].as_bytes())?;
+        date_file.write_all(b"\n")?;
+    }
+
+    elements.drain(0..(2 * number_of_dates + 5));
+
+    let mut records: Vec<String> = Vec::new();
+
+    let cols = number_of_dates + 5;
+    let rows = elements.len() / cols;
+
+    println!("rows = {}, cols = {}", rows, cols);
+
+    for r in 0..(rows - 1) {
+        for c in 0..cols {
+            if c == 0 || c > 4 {
+                records.push(elements[cols * r + c].clone());
+            }
+        }
+    }
+
+    let mut records_file = File::create("records.txt")?;
+    for record in records {
+        records_file.write_all(record.as_bytes())?;
+        records_file.write_all(b"\n")?;
     }
 
     return Ok(());
