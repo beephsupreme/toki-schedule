@@ -1,7 +1,8 @@
 //
+use regex::Regex;
 use scraper::Selector;
 use std::{fs::File, io::Write};
-use toki_schedule::URL;
+pub(crate) use toki_schedule::URL;
 
 fn main() -> std::io::Result<()> {
     //
@@ -50,13 +51,14 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    use regex::Regex;
-
-    let re = Regex::new(r"[^a-zA-Z\d-]").unwrap();
-
-    let testes: String = "EX-SPH-CL<font class=".to_string();
-
-    assert!(testes.contains(&re));
+    for element in elements.iter_mut() {
+        let words: Vec<String> = Regex::new(r"[^a-zA-Z0-9-']")
+            .unwrap()
+            .split(&element.to_owned())
+            .map(|x| x.to_string())
+            .collect();
+        *element = words[0].clone();
+    }
 
     let mut records: Vec<String> = Vec::new();
 

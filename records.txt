@@ -6,7 +6,7 @@ AVLED-2400K
 0
 0
 2500
-CUSTOM FLBK
+CUSTOM
 6287
 0
 0
@@ -46,7 +46,7 @@ EX-SCR
 0
 0
 0
-EX-SPH-CL<font class="font7">�i</font><font class="font6">2800/PP</font><font class="font7">�j</font>
+EX-SPH-CL
 11200
 0
 0
@@ -222,7 +222,7 @@ OB-TUBE-EC-BK
 0
 0
 0
-RV-SEALANT(Butyl  Sealing Tape<span style="display:none">)</span>
+RV-SEALANT
 0
 0
 60
@@ -230,7 +230,7 @@ RV-SEALANT(Butyl  Sealing Tape<span style="display:none">)</span>
 0
 0
 0
-RV-SEALANT(Butyl  Sealing Tape<span style="display:none">)</span>
+RV-SEALANT
 0
 90
 0
@@ -238,7 +238,7 @@ RV-SEALANT(Butyl  Sealing Tape<span style="display:none">)</span>
 0
 0
 0
-RW-CNT(TDP-0803)
+RW-CNT
 2000
 0
 0
@@ -262,7 +262,7 @@ RW-GASKET
 0
 0
 0
-RW-LSKT(TDP-0800)
+RW-LSKT
 1000
 0
 0
@@ -278,7 +278,7 @@ RW-SCREW
 0
 0
 0
-RW-USKT(TDP-0798)
+RW-USKT
 1000
 0
 0
@@ -286,7 +286,7 @@ RW-USKT(TDP-0798)
 0
 0
 0
-Sample tools  for lighting fix<span style="display:none">ture</span>
+Sample
 3
 0
 0
