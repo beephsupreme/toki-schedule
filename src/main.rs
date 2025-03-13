@@ -50,6 +50,14 @@ fn main() -> std::io::Result<()> {
         }
     }
 
+    use regex::Regex;
+
+    let re = Regex::new(r"[^a-zA-Z\d-]").unwrap();
+
+    let testes: String = "EX-SPH-CL<font class=".to_string();
+
+    assert!(testes.contains(&re));
+
     let mut records: Vec<String> = Vec::new();
 
     let cols = number_of_dates + 5;
