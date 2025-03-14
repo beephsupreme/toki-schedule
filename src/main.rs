@@ -80,27 +80,28 @@ fn main() -> std::io::Result<()> {
         records_file.write_all(b"\n")?;
     }
 
-    let mut schedule: HashMap<String, Vec<f64>> = HashMap::new();
+    // let mut schedule: HashMap<String, Vec<f64>> = HashMap::new();
+    //
+    // let e = elements.len();
+    // let n = number_of_dates;
+    // for i in 0..e {
+    //     let pn = elements[i].clone();
+    //     let mut current: Vec<f64> = vec![0.0; n];
+    //     for j in 0..n {
+    //         current[j] = (elements[i + j + 5]).parse::<f64>().unwrap();
+    //     }
+    //     if let Some(previous) = schedule.get(&pn) {
+    //         for j in 0..previous.len() {
+    //             current[j] += previous[j];
+    //         }
+    //         schedule.insert(pn, current);
+    //     } else {
+    //         schedule.insert(pn, current);
+    //     }
+    // }
+    //
+    // println!("{:#?}", schedule);
 
-    let e = elements.len();
-    let n = number_of_dates;
-    for i in 0..e {
-        let pn = elements[i].clone();
-        let mut current: Vec<f64> = vec![0.0; n];
-        for j in 0..n {
-            current[j] = (elements[i + j + 5]).parse::<f64>().unwrap();
-        }
-        if let Some(previous) = schedule.get(&pn) {
-            for j in 0..previous.len() {
-                current[j] += previous[j];
-            }
-            schedule.insert(pn, current);
-        } else {
-            schedule.insert(pn, current);
-        }
-    }
-
-    println!("{:#?}", schedule);
     return Ok(());
 }
 //
