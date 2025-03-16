@@ -74,6 +74,7 @@ fn main() -> std::io::Result<()> {
     for r in 0..(rows - 1) {
         let mut qtys: Vec<f64> = Vec::new();
         let mut part_num: String = String::new();
+        // let vec3: Vec<_> = vec1.iter().zip(vec2.iter()).map(|(a, b)| a + b).collect();
         for c in 0..cols {
             if c == 0 {
                 part_num = elements[cols * r + c].clone();
@@ -82,7 +83,16 @@ fn main() -> std::io::Result<()> {
                 qtys.push(elements[cols * r + c].clone().parse().unwrap());
             }
         }
-        schedule.entry(part_num).and_modify().or_insert(qtys); //schedule.insert(part_num, qtys);
+
+        // If part number is already on the map, add new & existing quantities
+        if let Some(existing_qtys) = schedule.get(&part_num) {
+            qtys = qtys
+                .iter()
+                .zip(existing_qtys.iter())
+                .map(|(a, b)| a + b)
+                .collect();
+        }
+        schedule.insert(part_num, qtys);
     }
 
     // Convert Hashmap to JSON & write to disk
