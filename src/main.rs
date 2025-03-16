@@ -19,6 +19,7 @@ fn main() -> std::io::Result<()> {
         elements.push(s);
     }
 
+    // find & count shipping dates
     let mut toki_code: usize = 0;
     let mut first_date: usize = 0;
 
@@ -27,6 +28,7 @@ fn main() -> std::io::Result<()> {
             toki_code = i;
         }
     }
+
     for i in (0..toki_code).rev() {
         if elements[i].is_empty() {
             first_date = i + 1;
@@ -35,23 +37,26 @@ fn main() -> std::io::Result<()> {
     }
 
     let number_of_dates = toki_code - first_date;
-
     elements.drain(0..first_date);
 
+    // Write dates to file
     let mut date_file = File::create("dates.txt")?;
     for i in 0..number_of_dates {
         date_file.write_all(elements[i].as_bytes())?;
         date_file.write_all(b"\n")?;
     }
 
+    // Delete rows up to first line of part numbers
     elements.drain(0..(2 * number_of_dates + 5));
 
+    // Remove Japanese characters
     for element in elements.iter_mut() {
         if element == "�@" {
             *element = "0".to_string();
         }
     }
 
+    // Truncate on non-alpha-numeric (except dashes)
     for element in elements.iter_mut() {
         let words: Vec<String> = Regex::new(r"[^a-zA-Z0-9-']")
             .unwrap()
@@ -61,46 +66,30 @@ fn main() -> std::io::Result<()> {
         *element = words[0].clone();
     }
 
-    let mut records: Vec<String> = Vec::new();
-
+    // Create Schedule Hashmap
     let cols = number_of_dates + 5;
     let rows = elements.len() / cols;
+    let mut schedule: HashMap<String, Vec<f64>> = HashMap::new();
 
     for r in 0..(rows - 1) {
+        let mut qtys: Vec<f64> = Vec::new();
+        let mut part_num: String = String::new();
         for c in 0..cols {
-            if c == 0 || c > 4 {
-                records.push(elements[cols * r + c].clone());
+            if c == 0 {
+                part_num = elements[cols * r + c].clone();
+            }
+            if c > 4 {
+                qtys.push(elements[cols * r + c].clone().parse().unwrap());
             }
         }
+        schedule.entry(part_num).and_modify().or_insert(qtys); //schedule.insert(part_num, qtys);
     }
 
-    let mut records_file = File::create("records.txt")?;
-    for record in records {
-        records_file.write_all(record.as_bytes())?;
-        records_file.write_all(b"\n")?;
-    }
-
-    // let mut schedule: HashMap<String, Vec<f64>> = HashMap::new();
-    //
-    // let e = elements.len();
-    // let n = number_of_dates;
-    // for i in 0..e {
-    //     let pn = elements[i].clone();
-    //     let mut current: Vec<f64> = vec![0.0; n];
-    //     for j in 0..n {
-    //         current[j] = (elements[i + j + 5]).parse::<f64>().unwrap();
-    //     }
-    //     if let Some(previous) = schedule.get(&pn) {
-    //         for j in 0..previous.len() {
-    //             current[j] += previous[j];
-    //         }
-    //         schedule.insert(pn, current);
-    //     } else {
-    //         schedule.insert(pn, current);
-    //     }
-    // }
-    //
-    // println!("{:#?}", schedule);
+    // Convert Hashmap to JSON & write to disk
+    let schedule_json = serde_json::to_string(&schedule).unwrap();
+    let mut file = File::create("schedule.json").expect("Could not create file!");
+    file.write_all(schedule_json.as_bytes())
+        .expect("Cannot write to the file!");
 
     return Ok(());
 }
